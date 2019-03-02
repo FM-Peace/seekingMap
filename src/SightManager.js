@@ -53,7 +53,7 @@ SightManager = (function () {
     p.subtractUnitSight = function (x, y, value) {
         var sight = this._unitSightAssocArr[this._createAssocArrKey(x, y)];
         if (sight - value < 1) {
-            deleteUnitSight(x, y);
+            this.deleteUnitSight(x, y);
         } else {
             this._unitSightAssocArr[this._createAssocArrKey(x, y)] = sight - value;
         }
@@ -68,7 +68,7 @@ SightManager = (function () {
     p.subtractMapSight = function (x, y, value) {
         var sight = this._mapSightAssocArr[this._createAssocArrKey(x, y)];
         if (sight - value < 1) {
-            deleteMapSight(x, y);
+            this.deleteMapSight(x, y);
         } else {
             this._mapSightAssocArr[this._createAssocArrKey(x, y)] = sight - value;
         }
