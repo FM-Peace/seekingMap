@@ -114,3 +114,9 @@ SightManager = (function () {
 
     return sightManager;
 })();
+
+// 単体テストを行うため、クラスをエクスポートする
+// SRPG Studioはexportsが未定義なので、事前にundefinedチェックを行う
+if (typeof exports !== 'undefined') {
+    exports.SightManager = SightManager;
+}

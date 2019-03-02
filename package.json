@@ -1,0 +1,25 @@
+{
+  "name": "seekingmap",
+  "version": "1.0.0",
+  "description": "FM-Peace",
+  "main": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FM-Peace/SeekingMap.git"
+  },
+  "author": "FM-Peace",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FM-Peace/SeekingMap/issues"
+  },
+  "homepage": "https://github.com/FM-Peace/SeekingMap/README.md",
+  "dependencies": {
+    "expect.js": "^0.3.1"
+  }
+}
