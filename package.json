@@ -19,7 +19,7 @@
     "url": "https://github.com/FM-Peace/SeekingMap/issues"
   },
   "homepage": "https://github.com/FM-Peace/SeekingMap/README.md",
-  "dependencies": {
+  "devDependencies": {
     "expect.js": "^0.3.1"
   }
 }
