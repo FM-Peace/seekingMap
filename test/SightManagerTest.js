@@ -11,7 +11,7 @@ describe('初期化時は視界値が登録されていない', function () {
     var sightManager = new source.SightManager();
 
     var keys = Object.keys(sightManager._unitSightAssocArr);
-    expect(keys.length).to.be(0);
+    expect(keys.length).to.be(1);
   });
 
   it('初期化時はマップレイヤーに視界値が登録されていない', function () {
