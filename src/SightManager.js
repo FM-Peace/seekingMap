@@ -75,6 +75,38 @@ SightManager = (function () {
     };
 
     /**
+     * ユニットレイヤーの視界値を全て減算する.減算後の視界値が0の場合,視界値を削除する
+     * @param {number} value 視界値
+     */
+    p.decreaseUnitSightAll = function (value) {
+        for (key in this._unitSightAssocArr) {
+            var sight = this._unitSightAssocArr[key];
+            if (sight - value < 1) {
+                var grids = key.split("_");
+                this.deleteUnitSight(grids[0], grids[1]);
+            } else {
+                this._unitSightAssocArr[key] = sight - value;
+            }
+        }
+    };
+
+    /**
+     * マップレイヤーの視界値を全て減算する.減算後の視界値が0の場合,視界値を削除する
+     * @param {number} value 視界値
+     */
+    p.decreaseMapSightAll = function (value) {
+        for (key in this._mapSightAssocArr) {
+            var sight = this._mapSightAssocArr[key];
+            if (sight - value < 1) {
+                var grids = key.split("_");
+                this.deleteMapSight(grids[0], grids[1]);
+            } else {
+                this._mapSightAssocArr[key] = sight - value;
+            }
+        }
+    };
+
+    /**
      * ユニットレイヤーの視界値を削除する
      * @param {number} x マップ上のx座標
      * @param {number} y マップ上のy座標
@@ -90,6 +122,24 @@ SightManager = (function () {
      */
     p.deleteMapSight = function (x, y) {
         delete this._mapSightAssocArr[this._createAssocArrKey(x, y)];
+    };
+
+    /**
+     * ユニットレイヤーの視界値を全て削除する
+     */
+    p.deleteUnitSightAll = function () {
+        for (key in this._unitSightAssocArr) {
+            delete this._unitSightAssocArr[key];
+        }
+    };
+
+    /**
+     * ユニットレイヤーの視界値を全て削除する
+     */
+    p.deleteMapSightAll = function () {
+        for (key in this._mapSightAssocArr) {
+            delete this._mapSightAssocArr[key];
+        }
     };
 
     /**

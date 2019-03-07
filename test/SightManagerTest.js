@@ -169,3 +169,115 @@ describe('どちらかのレイヤーに視界値が登録されていれば、�
     assert.strictEqual(isVisible, false);
   });
 });
+
+describe('レイヤーから一括で値の削除を行える', function () {
+  it('ユニットレイヤーから一括で視界値の削除を行える', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_2'] = 1;
+
+    sightManager.deleteUnitSightAll();
+
+    var isRegistered = ('1_1' in sightManager._mapSightAssocArr)
+    assert.strictEqual(isRegistered, false);
+
+    isRegistered = ('1_2' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+
+    var keys = Object.keys(sightManager._unitSightAssocArr);
+    var length = keys.length;
+    assert.strictEqual(length, 0);
+  });
+  it('マップレイヤーから一括で視界値の削除を行える', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._mapSightAssocArr['1_1'] = 1;
+    sightManager._mapSightAssocArr['1_2'] = 1;
+
+    sightManager.deleteMapSightAll();
+
+    var isRegistered = ('1_1' in sightManager._mapSightAssocArr)
+    assert.strictEqual(isRegistered, false);
+
+    isRegistered = ('1_2' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+
+    var keys = Object.keys(sightManager._mapSightAssocArr);
+    var length = keys.length;
+    assert.strictEqual(length, 0);
+  });
+});
+
+describe('レイヤーから一括で値の減算を行える', function () {
+  it('ユニットレイヤーから一括で視界値の減算を行える', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._unitSightAssocArr['1_1'] = 2;
+    sightManager._unitSightAssocArr['1_2'] = 2;
+
+    sightManager.decreaseUnitSightAll(1);
+
+    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    assert.strictEqual(isRegistered, true);
+    isRegistered = ('1_2' in sightManager._unitSightAssocArr);
+    assert.strictEqual(isRegistered, true);
+
+    var value = sightManager._unitSightAssocArr['1_1'];
+    assert.strictEqual(value, 1);
+    value = sightManager._unitSightAssocArr['1_2'];
+    assert.strictEqual(value, 1);
+  });
+  it('マップレイヤーから一括で視界値の減算を行える', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._mapSightAssocArr['1_1'] = 2;
+    sightManager._mapSightAssocArr['1_2'] = 2;
+
+    sightManager.decreaseMapSightAll(1);
+
+    var isRegistered = ('1_1' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, true);
+    isRegistered = ('1_2' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, true);
+
+    var value = sightManager._mapSightAssocArr['1_1'];
+    assert.strictEqual(value, 1);
+    value = sightManager._mapSightAssocArr['1_2'];
+    assert.strictEqual(value, 1);
+  });
+  it('ユニットレイヤーの視界値が0となった場合、視界値を削除する', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_2'] = 1;
+
+    sightManager.decreaseUnitSightAll(1);
+
+    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+    isRegistered = ('1_2' in sightManager._unitSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+
+    var keys = Object.keys(sightManager._mapSightAssocArr);
+    var length = keys.length;
+    assert.strictEqual(length, 0);
+  });
+  it('マップレイヤーの視界値が0となった場合、視界値を削除する', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._mapSightAssocArr['1_1'] = 1;
+    sightManager._mapSightAssocArr['1_2'] = 1;
+
+    sightManager.decreaseMapSightAll(1);
+
+    var isRegistered = ('1_1' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+    isRegistered = ('1_2' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+
+    var keys = Object.keys(sightManager._mapSightAssocArr);
+    var length = keys.length;
+    assert.strictEqual(length, 0);
+  });
+});
