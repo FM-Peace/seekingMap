@@ -50,7 +50,7 @@ SightManager = (function () {
      * @param {number} y マップ上のy座標
      * @param {number} value 視界値 
      */
-    p.subtractUnitSight = function (x, y, value) {
+    p.decreaseUnitSight = function (x, y, value) {
         var sight = this._unitSightAssocArr[this._createAssocArrKey(x, y)];
         if (sight - value < 1) {
             this.deleteUnitSight(x, y);
@@ -65,7 +65,7 @@ SightManager = (function () {
      * @param {number} y マップ上のy座標
      * @param {number} value 視界値 
      */
-    p.subtractMapSight = function (x, y, value) {
+    p.decreaseMapSight = function (x, y, value) {
         var sight = this._mapSightAssocArr[this._createAssocArrKey(x, y)];
         if (sight - value < 1) {
             this.deleteMapSight(x, y);

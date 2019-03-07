@@ -87,7 +87,7 @@ describe('視界値の減算を行える', function () {
 
     sightManager._unitSightAssocArr['1_1'] = 2;
 
-    sightManager.subtractUnitSight(1, 1, 1);
+    sightManager.decreaseUnitSight(1, 1, 1);
 
     var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, true);
@@ -101,7 +101,7 @@ describe('視界値の減算を行える', function () {
 
     sightManager._mapSightAssocArr['1_1'] = 2;
 
-    sightManager.subtractMapSight(1, 1, 1);
+    sightManager.decreaseMapSight(1, 1, 1);
 
     var isRegistered = ('1_1' in sightManager._mapSightAssocArr);
     assert.strictEqual(isRegistered, true);
@@ -115,7 +115,7 @@ describe('視界値の減算を行える', function () {
 
     sightManager._unitSightAssocArr['1_1'] = 1;
 
-    sightManager.subtractUnitSight(1, 1, 1);
+    sightManager.decreaseUnitSight(1, 1, 1);
 
     var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, false);
@@ -126,7 +126,7 @@ describe('視界値の減算を行える', function () {
 
     sightManager._mapSightAssocArr['1_1'] = 1;
 
-    sightManager.subtractMapSight(1, 1, 1);
+    sightManager.decreaseMapSight(1, 1, 1);
 
     var isRegistered = ('1_1' in sightManager._mapSightAssocArr);
     assert.strictEqual(isRegistered, false);
