@@ -14,6 +14,7 @@ var Unit = (function () {
         this._id = 0;
         this._mapX = 0;
         this._mapY = 0;
+        this._invisible_flag = false;
     };
 
     var p = unit.prototype;
@@ -28,6 +29,14 @@ var Unit = (function () {
 
     p.getMapY = function () {
         return this._mapY;
+    }
+
+    p.setInvisible = function (flag) {
+        this._invisible_flag = flag;
+    }
+
+    p.isInvisible = function () {
+        return this._invisible_flag;
     }
 
     return unit;
