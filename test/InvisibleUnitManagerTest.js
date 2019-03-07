@@ -4,6 +4,7 @@
 //---------------------------------
 
 var assert = require('power-assert');
+var sinon = require('sinon');
 var source = require('../src/InvisibleUnitManager.js');
 
 /**
@@ -55,7 +56,6 @@ describe('不可視ユニット管理クラステスト', function () {
         var invisibleUnitManager = new source.InvisibleUnitManager();
 
         var unit = new Unit();
-
         unit._id = 1;
         unit._mapX = 1;
         unit._mapY = 1;
@@ -63,11 +63,59 @@ describe('不可視ユニット管理クラステスト', function () {
         var key = invisibleUnitManager._createAssocArrKey(unit);
         assert.strictEqual(key, '1_1_1');
     });
+
+    // ユニットに対して不可視処理を行う。ただし、すでに不可視であれば処理を行わない
     it('ユニットに対して不可視処理を行える', function () {
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+        var spy = sinon.spy(unit, 'setInvisible');
+
+        invisibleUnitManager.setUnitInvisible(unit);
+        assert.strictEqual(spy.withArgs(true).callCount, 1);
+
+        spy.restore();
+    });
+
+    it('不可視処理を行った分、内部カウントが増加する', function () {
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+        unit._id = 1;
+        unit._mapX = 1;
+        unit._mapY = 1;
+
+        invisibleUnitManager.setUnitInvisible(unit);
+        assert.strictEqual(invisibleUnitManager._invisibleUnitAssocArr['1_1_1'], 1);
+
+        invisibleUnitManager.setUnitInvisible(unit);
+        assert.strictEqual(invisibleUnitManager._invisibleUnitAssocArr['1_1_1'], 2);
+    });
+
+    it('一度不可視処理を行ったユニットに対して、不可視処理を行わない', function () {
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+
+        var spy = sinon.spy(unit, 'setInvisible');
+
+        invisibleUnitManager.setUnitInvisible(unit);
+        invisibleUnitManager.setUnitInvisible(unit);
+        assert.strictEqual(spy.withArgs(true).callCount, 1);
+
+        spy.restore();
+    });
+
+    // ユニットに対して可視処理を行う。ただし、すでに可視であれば処理を行わない
+    it('ユニットに対して可視化処理を行える', function () {
         assert.ok(true);
     });
 
-    it('ユニットに対して可視化処理を行える', function () {
+    it('可視処理を行った分、内部カウントが減少する', function () {
+        assert.ok(true);
+    });
+
+    it('一度可視処理を行ったユニットに対して、可視処理を行わない', function () {
         assert.ok(true);
     });
 

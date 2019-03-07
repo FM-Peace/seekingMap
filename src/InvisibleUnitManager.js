@@ -24,6 +24,21 @@ InvisibleUnitManager = (function () {
         return unit.getMapX() + '_' + unit.getMapY() + '_' + unit.getId();
     };
 
+    /**
+     * ユニットに不可視処理を行う
+     * @param {any} unit
+     */
+    p.setUnitInvisible = function (unit) {
+        var key = this._createAssocArrKey(unit);
+
+        if (this._invisibleUnitAssocArr.hasOwnProperty(key)) {
+            var invisibleCount = this._invisibleUnitAssocArr[key];
+            this._invisibleUnitAssocArr[key] = invisibleCount + 1;
+        } else {
+            this._invisibleUnitAssocArr[key] = 1;
+            unit.setInvisible(true);
+        }
+    }
     return invisibleUnitManager;
 })();
 
