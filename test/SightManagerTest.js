@@ -217,6 +217,22 @@ describe('視界管理クラステスト', function () {
     value = sightManager._unitSightAssocArr['1_2'];
     assert.strictEqual(value, 1);
   });
+  it('ユニットレイヤーの視界値が0となった場合、視界値を削除する', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_2'] = 2;
+
+    sightManager.decreaseUnitSightAll(1);
+
+    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+    isRegistered = ('1_2' in sightManager._unitSightAssocArr);
+    assert.strictEqual(isRegistered, true);
+
+    value = sightManager._unitSightAssocArr['1_2'];
+    assert.strictEqual(value, 1);
+  });
   it('マップレイヤーから一括で視界値の減算を行える', function () {
     var sightManager = new source.SightManager();
 
@@ -235,38 +251,21 @@ describe('視界管理クラステスト', function () {
     value = sightManager._mapSightAssocArr['1_2'];
     assert.strictEqual(value, 1);
   });
-  it('ユニットレイヤーの視界値が0となった場合、視界値を削除する', function () {
-    var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
-    sightManager._unitSightAssocArr['1_2'] = 1;
-
-    sightManager.decreaseUnitSightAll(1);
-
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
-    assert.strictEqual(isRegistered, false);
-    isRegistered = ('1_2' in sightManager._unitSightAssocArr);
-    assert.strictEqual(isRegistered, false);
-
-    var keys = Object.keys(sightManager._mapSightAssocArr);
-    var length = keys.length;
-    assert.strictEqual(length, 0);
-  });
   it('マップレイヤーの視界値が0となった場合、視界値を削除する', function () {
     var sightManager = new source.SightManager();
 
     sightManager._mapSightAssocArr['1_1'] = 1;
-    sightManager._mapSightAssocArr['1_2'] = 1;
+    sightManager._mapSightAssocArr['1_2'] = 2;
 
     sightManager.decreaseMapSightAll(1);
 
     var isRegistered = ('1_1' in sightManager._mapSightAssocArr);
     assert.strictEqual(isRegistered, false);
     isRegistered = ('1_2' in sightManager._mapSightAssocArr);
-    assert.strictEqual(isRegistered, false);
+    assert.strictEqual(isRegistered, true);
 
-    var keys = Object.keys(sightManager._mapSightAssocArr);
-    var length = keys.length;
-    assert.strictEqual(length, 0);
+    value = sightManager._mapSightAssocArr['1_2'];
+    assert.strictEqual(value, 1);
   });
 });
