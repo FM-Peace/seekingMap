@@ -39,6 +39,28 @@ InvisibleUnitManager = (function () {
             unit.setInvisible(true);
         }
     }
+
+    /**
+     * ユニットに可視処理を行う
+     * @param {any} unit
+     */
+    p.setUnitVisible = function (unit) {
+        var key = this._createAssocArrKey(unit);
+
+        if (!this._invisibleUnitAssocArr.hasOwnProperty(key)) {
+            return;
+        }
+
+        var invisibleCount = this._invisibleUnitAssocArr[key];
+        if (invisibleCount > 0) {
+            this._invisibleUnitAssocArr[key] = invisibleCount - 1;
+        }
+
+        if (this._invisibleUnitAssocArr[key] === 0) {
+            unit.setInvisible(false);
+            delete this._invisibleUnitAssocArr[key];
+        }
+    }
     return invisibleUnitManager;
 })();
 

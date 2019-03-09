@@ -106,17 +106,77 @@ describe('不可視ユニット管理クラステスト', function () {
         spy.restore();
     });
 
-    // ユニットに対して可視処理を行う。ただし、すでに可視であれば処理を行わない
-    it('ユニットに対して可視化処理を行える', function () {
-        assert.ok(true);
+    // ユニットに対して可視処理を行う。ただし、まだ内部カウントが残っていれば処理を行わない
+    it('内部カウントが0となった際に、実際の可視化処理を行う', function () {
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+        unit._id = 1;
+        unit._mapX = 1;
+        unit._mapY = 1;
+        var spy = sinon.spy(unit, 'setInvisible');
+
+        invisibleUnitManager._invisibleUnitAssocArr['1_1_1'] = 2;
+
+        invisibleUnitManager.setUnitVisible(unit);
+        assert.strictEqual(spy.withArgs(false).callCount, 0);
+
+        invisibleUnitManager.setUnitVisible(unit);
+        assert.strictEqual(spy.withArgs(false).callCount, 1);
+
+        spy.restore();
     });
 
-    it('可視処理を行った分、内部カウントが減少する', function () {
-        assert.ok(true);
+    it('可視処理を行った分、内部カウントが減少する。', function () {
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+        unit._id = 1;
+        unit._mapX = 1;
+        unit._mapY = 1;
+
+        invisibleUnitManager._invisibleUnitAssocArr['1_1_1'] = 2;
+
+        invisibleUnitManager.setUnitVisible(unit);
+        assert.strictEqual(invisibleUnitManager._invisibleUnitAssocArr['1_1_1'], 1);
+    });
+
+    it('内部カウントが0となった際、不可視ユニット情報を削除する', function () {
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+        unit._id = 1;
+        unit._mapX = 1;
+        unit._mapY = 1;
+
+        var key = '1_1_1';
+
+        invisibleUnitManager._invisibleUnitAssocArr[key] = 1;
+
+        invisibleUnitManager.setUnitVisible(unit);
+        var isRegistered = key in invisibleUnitManager._invisibleUnitAssocArr
+        assert.strictEqual(isRegistered, false);
     });
 
     it('一度可視処理を行ったユニットに対して、可視処理を行わない', function () {
-        assert.ok(true);
+        var invisibleUnitManager = new source.InvisibleUnitManager();
+
+        var unit = new Unit();
+        var spy = sinon.spy(unit, 'setInvisible');
+
+        unit._id = 1;
+        unit._mapX = 1;
+        unit._mapY = 1;
+
+        invisibleUnitManager._invisibleUnitAssocArr['1_1_1'] = 1;
+
+        invisibleUnitManager.setUnitVisible(unit);
+        assert.strictEqual(spy.withArgs(false).callCount, 1);
+
+        invisibleUnitManager.setUnitVisible(unit);
+        assert.strictEqual(spy.withArgs(false).callCount, 1);
+
+        spy.restore();
     });
 
     it('不可視ユニットを取得できる', function () {
