@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --recursive --colors --reporter mocha-jenkins-reporter"
+    "test": "npm-run-all test:mocha test:coverage",
+    "test:mocha": "mocha --recursive --colors --reporter=mocha-jenkins-reporter",
+    "test:coverage": "nyc mocha --recursive"
   },
   "repository": {
     "type": "git",
@@ -22,8 +24,30 @@
   "devDependencies": {
     "intelli-espower-loader": "^1.0.1",
     "mocha-jenkins-reporter": "^0.4.1",
+    "nyc": "^13.3.0",
     "power-assert": "^1.6.1",
-    "sinon": "^7.2.7"
+    "sinon": "^7.2.7",
+    "source-map-support": "^0.5.10"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "nyc": {
+    "check-coverage": true,
+    "extension": [
+      ".js"
+    ],
+    "require": [
+      "source-map-support/register"
+    ],
+    "reporter": [
+      "cobertura",
+      "lcov"
+    ],
+    "exclude": [
+      "test"
+    ],
+    "report-dir": "reports",
+    "temp-dir": "reports/.nyc_output",
+    "sourceMap": true,
+    "instrument": true
+  }
 }
