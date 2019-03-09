@@ -61,6 +61,23 @@ InvisibleUnitManager = (function () {
             delete this._invisibleUnitAssocArr[key];
         }
     }
+
+    /**
+     * マップ座標から不可視ユニットを取得する.
+     * 存在しなければ、nullを返却する.
+     * @param {number} x マップ上のx座標
+     * @param {number} y マップ上のy座標
+     */
+    p.getInvisibleUnitIdFromPoint = function (x, y) {
+        for (key in this._invisibleUnitAssocArr) {
+            if (key.indexOf(x + '_' + y) == 0) {
+                var unitId = parseInt(key.split('_')[2]);
+                return unitId;
+            }
+        }
+        return -1;
+    }
+
     return invisibleUnitManager;
 })();
 
