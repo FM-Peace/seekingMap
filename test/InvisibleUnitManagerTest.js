@@ -191,7 +191,9 @@ describe('不可視ユニット管理クラステスト', function () {
     it('座標から不可視ユニットのIdを取得する場合、座標にユニットが存在しなければ利用しないユニットIDを取得する', function () {
         var invisibleUnitManager = new source.InvisibleUnitManager();
 
-        var unitId = invisibleUnitManager.getInvisibleUnitIdFromPoint(1, 1);
+        invisibleUnitManager._invisibleUnitAssocArr['1_1_1'] = 1;
+
+        var unitId = invisibleUnitManager.getInvisibleUnitIdFromPoint(1, 2);
         assert.strictEqual(unitId, -1);
     });
 });
