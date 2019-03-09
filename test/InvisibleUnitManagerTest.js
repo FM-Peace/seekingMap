@@ -194,8 +194,4 @@ describe('不可視ユニット管理クラステスト', function () {
         var unitId = invisibleUnitManager.getInvisibleUnitIdFromPoint(1, 1);
         assert.strictEqual(unitId, -1);
     });
-
-    it('ユニットが不可視か判定できる', function () {
-        assert.ok(true);
-    });
 });
