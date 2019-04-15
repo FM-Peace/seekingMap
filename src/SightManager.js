@@ -16,10 +16,6 @@ SightManager = (function () {
          * マップレイヤーの視界管理用連想配列
          */
         this._mapSightAssocArr = {};
-        /**
-         * 視界範囲の計算用シミュレータ
-         */
-        this._simulator = null;
     };
 
     var p = sightManager.prototype;
