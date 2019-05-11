@@ -42,6 +42,25 @@ SightManager = (function () {
     };
 
     /**
+     * ユニットレイヤーの視界値を取得する
+     * @param {number} x マップ上のx座標
+     * @param {number} y マップ上のy座標
+     * @param {number} unitId ユニットID
+     */
+    p.getUnitSight = function (x, y, unitId) {
+        return this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)];
+    };
+
+    /**
+     * マップレイヤーの視界値を取得する
+     * @param {number} x マップ上のx座標
+     * @param {number} y マップ上のy座標
+     */
+    p.getMapSight = function (x, y) {
+        return this._mapSightAssocArr[this._createAssocArrKey(x, y)];
+    };
+
+    /**
      * ユニットレイヤーの視界値を減算する.減算後の視界値が0の場合,視界値を削除する
      * @param {number} x マップ上のx座標
      * @param {number} y マップ上のy座標

@@ -60,6 +60,24 @@ describe('視界管理クラステスト', function () {
     assert.strictEqual(value, 1);
   });
 
+  // レイヤーから視界値を取得できる
+  it('ユニットレイヤーから視界値を取得できる', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
+
+    var sight = sightManager.getUnitSight(1, 1, 1);
+    assert.strictEqual(sight, 1);
+  });
+  it('マップレイヤーから視界値を取得できる', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._mapSightAssocArr['1_1'] = 1;
+
+    var sight = sightManager.getMapSight(1, 1);
+    assert.strictEqual(sight, 1);
+  });
+
   // レイヤーから視界値の削除を行える
   it('ユニットレイヤーから視界値の削除を行える', function () {
     var sightManager = new source.SightManager();
