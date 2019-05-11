@@ -133,7 +133,7 @@ SightManager = (function () {
     };
 
     /**
-     * ユニットレイヤーの視界値を全て削除する
+     * マップレイヤーの視界値を全て削除する
      */
     p.deleteMapSightAll = function () {
         for (key in this._mapSightAssocArr) {
