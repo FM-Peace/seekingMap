@@ -24,10 +24,11 @@ SightManager = (function () {
      * ユニットレイヤーの視界情報を登録する
      * @param {number} x マップ上のx座標
      * @param {number} y マップ上のy座標
+     * @param {number} unitId ユニットID
      * @param {number} value 視界値
      */
-    p.registerUnitSight = function (x, y, value) {
-        this._unitSightAssocArr[this._createAssocArrKey(x, y)] = value;
+    p.registerUnitSight = function (x, y, unitId, value) {
+        this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)] = value;
     };
 
     /**
@@ -44,14 +45,15 @@ SightManager = (function () {
      * ユニットレイヤーの視界値を減算する.減算後の視界値が0の場合,視界値を削除する
      * @param {number} x マップ上のx座標
      * @param {number} y マップ上のy座標
+     * @param {number} unitId ユニットID
      * @param {number} value 視界値 
      */
-    p.decreaseUnitSight = function (x, y, value) {
-        var sight = this._unitSightAssocArr[this._createAssocArrKey(x, y)];
+    p.decreaseUnitSight = function (x, y, unitId, value) {
+        var sight = this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)];
         if (sight - value < 1) {
-            this.deleteUnitSight(x, y);
+            this.deleteUnitSight(x, y, unitId);
         } else {
-            this._unitSightAssocArr[this._createAssocArrKey(x, y)] = sight - value;
+            this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)] = sight - value;
         }
     };
 
@@ -78,8 +80,8 @@ SightManager = (function () {
         for (key in this._unitSightAssocArr) {
             var sight = this._unitSightAssocArr[key];
             if (sight - value < 1) {
-                var grids = key.split("_");
-                this.deleteUnitSight(grids[0], grids[1]);
+                var args = key.split("_");
+                this.deleteUnitSight(args[0], args[1], args[2]);
             } else {
                 this._unitSightAssocArr[key] = sight - value;
             }
@@ -106,9 +108,10 @@ SightManager = (function () {
      * ユニットレイヤーの視界値を削除する
      * @param {number} x マップ上のx座標
      * @param {number} y マップ上のy座標
+     * @param {number} unitId ユニットID
      */
-    p.deleteUnitSight = function (x, y) {
-        delete this._unitSightAssocArr[this._createAssocArrKey(x, y)];
+    p.deleteUnitSight = function (x, y, unitId) {
+        delete this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)];
     };
 
     /**
@@ -146,7 +149,17 @@ SightManager = (function () {
     p.isVisible = function (x, y) {
         var key = this._createAssocArrKey(x, y);
 
-        return (key in this._unitSightAssocArr) || (key in this._mapSightAssocArr)
+        if (key in this._mapSightAssocArr) {
+            return true;
+        }
+
+        for (unitLayerkey in this._unitSightAssocArr) {
+            if (unitLayerkey.indexOf(key) === 0) {
+                return true;
+            }
+        }
+
+        return false;
     };
 
     /**
@@ -158,6 +171,15 @@ SightManager = (function () {
         return x + '_' + y;
     };
 
+    /**
+     * ユニットレイヤー配列のキーを作成する
+     * @param {number} x マップ上のx座標
+     * @param {number} y マップ上のy座標
+     * @param {number} unitId ユニットID
+     */
+    p._createUnitLayerArrKey = function (x, y, unitId) {
+        return x + '_' + y + '_' + unitId;
+    };
     return sightManager;
 })();
 

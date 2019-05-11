@@ -29,16 +29,23 @@ describe('視界管理クラステスト', function () {
     assert.strictEqual(key, '1_1');
   });
 
+  it('キー(x座標)_(y座標)_(ユニットID)を作成できる', function () {
+    var sightManager = new source.SightManager();
+
+    var key = sightManager._createUnitLayerArrKey(1, 1, 1);
+    assert.strictEqual(key, '1_1_1');
+  });
+
   // レイヤーに視界値の登録を行える
   it('ユニットレイヤーに視界値の登録を行える', function () {
     var sightManager = new source.SightManager();
 
-    sightManager.registerUnitSight(1, 1, 1);
+    sightManager.registerUnitSight(1, 1, 1, 1);
 
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    var isRegistered = ('1_1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, true);
 
-    var value = sightManager._unitSightAssocArr['1_1'];
+    var value = sightManager._unitSightAssocArr['1_1_1'];
     assert.strictEqual(value, 1);
   });
   it('マップレイヤーに視界値の登録を行える', function () {
@@ -57,11 +64,11 @@ describe('視界管理クラステスト', function () {
   it('ユニットレイヤーから視界値の削除を行える', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
 
-    sightManager.deleteUnitSight(1, 1);
+    sightManager.deleteUnitSight(1, 1, 1);
 
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    var isRegistered = ('1_1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, false);
   });
 
@@ -80,24 +87,24 @@ describe('視界管理クラステスト', function () {
   it('ユニットレイヤーに視界値の減算を行える', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 2;
+    sightManager._unitSightAssocArr['1_1_1'] = 2;
 
-    sightManager.decreaseUnitSight(1, 1, 1);
+    sightManager.decreaseUnitSight(1, 1, 1, 1);
 
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    var isRegistered = ('1_1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, true);
 
-    var value = sightManager._unitSightAssocArr['1_1'];
+    var value = sightManager._unitSightAssocArr['1_1_1'];
     assert.strictEqual(value, 1);
   });
   it('ユニットレイヤーの視界値が0以下となった場合、視界値を削除する', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
 
-    sightManager.decreaseUnitSight(1, 1, 1);
+    sightManager.decreaseUnitSight(1, 1, 1, 1);
 
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    var isRegistered = ('1_1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, false);
   });
   it('マップレイヤーに視界値の減算を行える', function () {
@@ -128,7 +135,7 @@ describe('視界管理クラステスト', function () {
   it('ユニットレイヤーに視界値が登録されていれば、視界内と判定する', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
 
     var isVisible = sightManager.isVisible(1, 1);
     assert.strictEqual(isVisible, true);
@@ -146,7 +153,7 @@ describe('視界管理クラステスト', function () {
   it('どちらのレイヤーにも視界値が登録されていれば、視界内と判定する', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
     sightManager._mapSightAssocArr['1_1'] = 1;
 
     var isVisible = sightManager.isVisible(1, 1);
@@ -164,15 +171,15 @@ describe('視界管理クラステスト', function () {
   it('ユニットレイヤーから一括で視界値の削除を行える', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
-    sightManager._unitSightAssocArr['1_2'] = 1;
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
+    sightManager._unitSightAssocArr['1_2_2'] = 1;
 
     sightManager.deleteUnitSightAll();
 
-    var isRegistered = ('1_1' in sightManager._mapSightAssocArr)
+    var isRegistered = ('1_1_1' in sightManager._mapSightAssocArr)
     assert.strictEqual(isRegistered, false);
 
-    isRegistered = ('1_2' in sightManager._mapSightAssocArr);
+    isRegistered = ('1_2_2' in sightManager._mapSightAssocArr);
     assert.strictEqual(isRegistered, false);
 
     var keys = Object.keys(sightManager._unitSightAssocArr);
@@ -202,35 +209,35 @@ describe('視界管理クラステスト', function () {
   it('ユニットレイヤーから一括で視界値の減算を行える', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 2;
-    sightManager._unitSightAssocArr['1_2'] = 2;
+    sightManager._unitSightAssocArr['1_1_1'] = 2;
+    sightManager._unitSightAssocArr['1_2_2'] = 2;
 
     sightManager.decreaseUnitSightAll(1);
 
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    var isRegistered = ('1_1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, true);
-    isRegistered = ('1_2' in sightManager._unitSightAssocArr);
+    isRegistered = ('1_2_2' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, true);
 
-    var value = sightManager._unitSightAssocArr['1_1'];
+    var value = sightManager._unitSightAssocArr['1_1_1'];
     assert.strictEqual(value, 1);
-    value = sightManager._unitSightAssocArr['1_2'];
+    value = sightManager._unitSightAssocArr['1_2_2'];
     assert.strictEqual(value, 1);
   });
   it('ユニットレイヤーの視界値が0となった場合、視界値を削除する', function () {
     var sightManager = new source.SightManager();
 
-    sightManager._unitSightAssocArr['1_1'] = 1;
-    sightManager._unitSightAssocArr['1_2'] = 2;
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
+    sightManager._unitSightAssocArr['1_2_2'] = 2;
 
     sightManager.decreaseUnitSightAll(1);
 
-    var isRegistered = ('1_1' in sightManager._unitSightAssocArr);
+    var isRegistered = ('1_1_1' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, false);
-    isRegistered = ('1_2' in sightManager._unitSightAssocArr);
+    isRegistered = ('1_2_2' in sightManager._unitSightAssocArr);
     assert.strictEqual(isRegistered, true);
 
-    value = sightManager._unitSightAssocArr['1_2'];
+    value = sightManager._unitSightAssocArr['1_2_2'];
     assert.strictEqual(value, 1);
   });
   it('マップレイヤーから一括で視界値の減算を行える', function () {
