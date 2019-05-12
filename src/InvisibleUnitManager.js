@@ -21,7 +21,8 @@ InvisibleUnitManager = (function () {
      * @param {number} unit ユニット
      */
     p._createAssocArrKey = function (unit) {
-        return unit.getMapX() + '_' + unit.getMapY() + '_' + unit.getId();
+        var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+        return index + '_' + unit.getId();
     };
 
     /**
@@ -70,8 +71,9 @@ InvisibleUnitManager = (function () {
      */
     p.getInvisibleUnitIdFromPoint = function (x, y) {
         for (key in this._invisibleUnitAssocArr) {
-            if (key.indexOf(x + '_' + y) == 0) {
-                var unitId = parseInt(key.split('_')[2]);
+            var splitKeys = key.split("_");
+            if (splitKeys[0] == CurrentMap.getIndex(x, y)) {
+                var unitId = parseInt(splitKeys[1]);
                 return unitId;
             }
         }
