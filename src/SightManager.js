@@ -152,6 +152,18 @@ SightManager = (function () {
     };
 
     /**
+     * ユニットレイヤーの特定ユニットIDの視界値を全て削除する
+     */
+    p.deleteUnitSightAllFromUnitId = function (unitId) {
+        for (key in this._unitSightAssocArr) {
+            var pattern = '_' + unitId;
+            if ((key.lastIndexOf(pattern) + pattern.length === key.length) && (pattern.length <= key.length)) {
+                delete this._unitSightAssocArr[key]
+            }
+        }
+    };
+
+    /**
      * マップレイヤーの視界値を全て削除する
      */
     p.deleteMapSightAll = function () {

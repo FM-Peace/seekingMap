@@ -204,6 +204,20 @@ describe('視界管理クラステスト', function () {
     var length = keys.length;
     assert.strictEqual(length, 0);
   });
+  it('ユニットレイヤーからユニットIDを基に一括で視界値の削除を行える', function () {
+    var sightManager = new source.SightManager();
+
+    sightManager._unitSightAssocArr['1_1_1'] = 1;
+    sightManager._unitSightAssocArr['1_2_2'] = 1;
+
+    sightManager.deleteUnitSightAllFromUnitId(1);
+
+    var isRegistered = ('1_1_1' in sightManager._mapSightAssocArr)
+    assert.strictEqual(isRegistered, false);
+
+    isRegistered = ('1_2_2' in sightManager._mapSightAssocArr);
+    assert.strictEqual(isRegistered, false);
+  });
   it('マップレイヤーから一括で視界値の削除を行える', function () {
     var sightManager = new source.SightManager();
 
