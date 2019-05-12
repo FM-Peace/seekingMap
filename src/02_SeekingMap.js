@@ -49,4 +49,15 @@ var seekingMapManager = new SeekingMapManager();
             root.drawFadeLight(drawIndexArray, 0xffffff, 123);
         }
     };
+
+    var alias2 = UnitWaitFlowEntry._completeMemberData;
+    UnitWaitFlowEntry._completeMemberData = function (playerTurn) {
+        var result = alias2.call(this, playerTurn);
+
+        if (seekingMapManager.isSightMode()) {
+            var unit = playerTurn.getTurnTargetUnit();
+            seekingMapManager.updateUnitSight(unit);
+        }
+        return result;
+    };
 })()
