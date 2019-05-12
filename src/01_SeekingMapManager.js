@@ -81,26 +81,25 @@ SeekingMapManager = (function () {
 
         sightManager.deleteUnitSightAllFromUnitId(unitId);
 
-        this._simulator.startSimulation(unit, 5);
+        this._simulator.startSimulation(unit, 3);
         var indexArray = this._simulator.getSimulationIndexArray();
-        for (var index in indexArray) {
-            var x = CurrentMap.getX(index);
-            var y = CurrentMap.getY(index);
-            var sight = this._simulator.getSimulationMovePoint(index);
+        for (var i = 0; i < indexArray.length; i++) {
+            var index = indexArray[i];
+            var sight = 3 - this._simulator.getSimulationMovePoint(index);
 
-            sightManager.registerUnitSight(x, y, unitId, sight);
+            sightManager.registerUnitSight(index, unitId, sight);
         };
     }
 
-    p.isVisible = function (x, y, unitType) {
+    p.isVisible = function (index, unitType) {
         if (unitType === UnitType.PLAYER) {
-            return this._playerSightManager.isVisible(x, y);
+            return this._playerSightManager.isVisible(index);
         }
         if (unitType === UnitType.ENEMY) {
-            return this._enemySightManager.isVisible(x, y);
+            return this._enemySightManager.isVisible(index);
         }
         if (unitType === UnitType.ALLY) {
-            return this._allySightManager.isVisible(x, y);
+            return this._allySightManager.isVisible(index);
         }
 
         return false;

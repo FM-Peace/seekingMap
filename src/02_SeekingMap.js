@@ -40,10 +40,9 @@ var seekingMapManager = new SeekingMapManager();
             var drawIndexArray = [];
 
             for (var i = 0; i < array.length; i++) {
-                var x = CurrentMap.getX(array[i]);
-                var y = CurrentMap.getY(array[i]);
-                if (!seekingMapManager.isVisible(x, y, UnitType.PLAYER)) {
-                    drawIndexArray.push(array[i]);
+                var index = array[i];
+                if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+                    drawIndexArray.push(index);
                 }
             }
 
