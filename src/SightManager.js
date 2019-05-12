@@ -22,72 +22,66 @@ SightManager = (function () {
 
     /**
      * ユニットレイヤーの視界情報を登録する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} unitId ユニットID
      * @param {number} value 視界値
      */
-    p.registerUnitSight = function (x, y, unitId, value) {
-        this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)] = value;
+    p.registerUnitSight = function (index, unitId, value) {
+        this._unitSightAssocArr[this._createUnitLayerArrKey(index, unitId)] = value;
     };
 
     /**
      * マップレイヤーの視界値を登録する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} value 視界値
      */
-    p.registerMapSight = function (x, y, value) {
-        this._mapSightAssocArr[this._createAssocArrKey(x, y)] = value;
+    p.registerMapSight = function (index, value) {
+        this._mapSightAssocArr[this._createAssocArrKey(index)] = value;
     };
 
     /**
      * ユニットレイヤーの視界値を取得する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} unitId ユニットID
      */
-    p.getUnitSight = function (x, y, unitId) {
-        return this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)];
+    p.getUnitSight = function (index, unitId) {
+        return this._unitSightAssocArr[this._createUnitLayerArrKey(index, unitId)];
     };
 
     /**
      * マップレイヤーの視界値を取得する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      */
-    p.getMapSight = function (x, y) {
-        return this._mapSightAssocArr[this._createAssocArrKey(x, y)];
+    p.getMapSight = function (index) {
+        return this._mapSightAssocArr[this._createAssocArrKey(index)];
     };
 
     /**
      * ユニットレイヤーの視界値を減算する.減算後の視界値が0の場合,視界値を削除する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} unitId ユニットID
      * @param {number} value 視界値 
      */
-    p.decreaseUnitSight = function (x, y, unitId, value) {
-        var sight = this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)];
+    p.decreaseUnitSight = function (index, unitId, value) {
+        var sight = this._unitSightAssocArr[this._createUnitLayerArrKey(index, unitId)];
         if (sight - value < 1) {
-            this.deleteUnitSight(x, y, unitId);
+            this.deleteUnitSight(index, unitId);
         } else {
-            this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)] = sight - value;
+            this._unitSightAssocArr[this._createUnitLayerArrKey(index, unitId)] = sight - value;
         }
     };
 
     /**
      * マップレイヤーの視界値を減算する.減算後の視界値が0の場合,視界値を削除する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} value 視界値 
      */
-    p.decreaseMapSight = function (x, y, value) {
-        var sight = this._mapSightAssocArr[this._createAssocArrKey(x, y)];
+    p.decreaseMapSight = function (index, value) {
+        var sight = this._mapSightAssocArr[this._createAssocArrKey(index)];
         if (sight - value < 1) {
-            this.deleteMapSight(x, y);
+            this.deleteMapSight(index);
         } else {
-            this._mapSightAssocArr[this._createAssocArrKey(x, y)] = sight - value;
+            this._mapSightAssocArr[this._createAssocArrKey(index)] = sight - value;
         }
     };
 
@@ -99,8 +93,8 @@ SightManager = (function () {
         for (key in this._unitSightAssocArr) {
             var sight = this._unitSightAssocArr[key];
             if (sight - value < 1) {
-                var args = key.split("_");
-                this.deleteUnitSight(args[0], args[1], args[2]);
+                var args = key.split('_');
+                this.deleteUnitSight(args[0], args[1]);
             } else {
                 this._unitSightAssocArr[key] = sight - value;
             }
@@ -115,8 +109,7 @@ SightManager = (function () {
         for (key in this._mapSightAssocArr) {
             var sight = this._mapSightAssocArr[key];
             if (sight - value < 1) {
-                var grids = key.split("_");
-                this.deleteMapSight(grids[0], grids[1]);
+                this.deleteMapSight(key);
             } else {
                 this._mapSightAssocArr[key] = sight - value;
             }
@@ -125,21 +118,19 @@ SightManager = (function () {
 
     /**
      * ユニットレイヤーの視界値を削除する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} unitId ユニットID
      */
-    p.deleteUnitSight = function (x, y, unitId) {
-        delete this._unitSightAssocArr[this._createUnitLayerArrKey(x, y, unitId)];
+    p.deleteUnitSight = function (index, unitId) {
+        delete this._unitSightAssocArr[this._createUnitLayerArrKey(index, unitId)];
     };
 
     /**
      * マップレイヤーの視界値を削除する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      */
-    p.deleteMapSight = function (x, y) {
-        delete this._mapSightAssocArr[this._createAssocArrKey(x, y)];
+    p.deleteMapSight = function (index) {
+        delete this._mapSightAssocArr[this._createAssocArrKey(index)];
     };
 
     /**
@@ -156,9 +147,9 @@ SightManager = (function () {
      */
     p.deleteUnitSightAllFromUnitId = function (unitId) {
         for (key in this._unitSightAssocArr) {
-            var pattern = '_' + unitId;
-            if ((key.lastIndexOf(pattern) + pattern.length === key.length) && (pattern.length <= key.length)) {
-                delete this._unitSightAssocArr[key]
+            var splitkeys = key.split('_');
+            if (splitkeys[1] === String(unitId)) {
+                delete this._unitSightAssocArr[key];
             }
         }
     };
@@ -174,18 +165,18 @@ SightManager = (function () {
 
     /**
      * ユニットレイヤー、もしくはマップレイヤーに視界値が設定されているか
-     * @param {*} x マップ上のx座標
-     * @param {*} y マップ上のy座標
+     * @param {number} index マップ上のindex
      */
-    p.isVisible = function (x, y) {
-        var key = this._createAssocArrKey(x, y);
+    p.isVisible = function (index) {
+        var key = this._createAssocArrKey(index);
 
         if (key in this._mapSightAssocArr) {
             return true;
         }
 
         for (unitLayerkey in this._unitSightAssocArr) {
-            if (unitLayerkey.indexOf(key) === 0) {
+            var splitkeys = unitLayerkey.split('_');
+            if (splitkeys[0] === String(index)) {
                 return true;
             }
         }
@@ -195,21 +186,19 @@ SightManager = (function () {
 
     /**
      * 連想配列のキーを作成する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      */
-    p._createAssocArrKey = function (x, y) {
-        return x + '_' + y;
+    p._createAssocArrKey = function (index) {
+        return String(index);
     };
 
     /**
      * ユニットレイヤー配列のキーを作成する
-     * @param {number} x マップ上のx座標
-     * @param {number} y マップ上のy座標
+     * @param {number} index マップ上のindex
      * @param {number} unitId ユニットID
      */
-    p._createUnitLayerArrKey = function (x, y, unitId) {
-        return x + '_' + y + '_' + unitId;
+    p._createUnitLayerArrKey = function (index, unitId) {
+        return index + '_' + unitId;
     };
     return sightManager;
 })();
