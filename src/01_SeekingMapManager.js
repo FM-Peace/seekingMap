@@ -109,6 +109,30 @@ SeekingMapManager = (function () {
         return this._sightMode !== SightMode.NONE;
     };
 
+    p.setUnitInvisible = function (unit) {
+        if (unit.getUnitType() === UnitType.PLAYER) {
+            return this._playerInvisibleUnitManager.setUnitInvisible(unit);
+        }
+        if (unit.getUnitType() === UnitType.ENEMY) {
+            return this._enemyInvisibleUnitManager.setUnitInvisible(unit);
+        }
+        if (unit.getUnitType() === UnitType.ALLY) {
+            return this._allySightManager.setUnitInvisible(unit);
+        }
+    };
+
+    p.setUnitVisible = function (unit) {
+        if (unit.getUnitType() === UnitType.PLAYER) {
+            return this._playerInvisibleUnitManager.setUnitVisible(unit);
+        }
+        if (unit.getUnitType() === UnitType.ENEMY) {
+            return this._enemyInvisibleUnitManager.setUnitVisible(unit);
+        }
+        if (unit.getUnitType() === UnitType.ALLY) {
+            return this._allySightManager.setUnitVisible(unit);
+        }
+    };
+
     p.startSightMode = function (sightMode) {
         this._sightMode = sightMode;
 
