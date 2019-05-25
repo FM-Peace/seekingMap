@@ -88,7 +88,7 @@ var seekingMapManager = new SeekingMapManager();
             var allyList = AllyList.getAliveList();
 
             for (var i = 0; i < allyList.getCount(); i++) {
-                var unit = enemyList.getData(i);
+                var unit = allyList.getData(i);
                 seekingMapManager.setUnitVisible(unit);
             }
         }
