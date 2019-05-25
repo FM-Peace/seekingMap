@@ -229,9 +229,9 @@ var seekingMapManager = new SeekingMapManager();
         return indexArrayNew;
     };
 
-    var alias1 = AttackChecker.getFusionAttackIndexArray;
+    var alias2 = AttackChecker.getFusionAttackIndexArray;
     AttackChecker.getFusionAttackIndexArray = function (unit, weapon, fusionData) {
-        var indexArray = alias1.call(this, unit, weapon, fusionData);
+        var indexArray = alias2.call(this, unit, weapon, fusionData);
         var indexArrayNew = [];
 
         if (seekingMapManager.isSightMode()) {
