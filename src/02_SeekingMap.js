@@ -163,7 +163,7 @@ var seekingMapManager = new SeekingMapManager();
 // 視界更新系
 (function () {
     var alias1 = PlayerTurn._prepareTurnMemberData;
-    PlayerTurn._prepareTurnMemberData = function(){
+    PlayerTurn._prepareTurnMemberData = function () {
         alias1.call(this);
         if (seekingMapManager.isSightMode()) {
             var playerList = PlayerList.getAliveList();
@@ -185,5 +185,48 @@ var seekingMapManager = new SeekingMapManager();
             seekingMapManager.updateUnitSight(unit);
         }
         return result;
+    };
+})();
+
+// 攻撃系
+(function () {
+    var alias1 = AttackChecker.getAttackIndexArray;
+    AttackChecker.getAttackIndexArray = function (unit, weapon, isSingleCheck) {
+        var indexArray = alias1.call(this, unit, weapon, isSingleCheck);
+        var indexArrayNew = [];
+
+        if (seekingMapManager.isSightMode()) {
+            for (var i = 0; i < indexArray.length; i++) {
+                var index = indexArray[i];
+                var targetUnit = PosChecker.getUnitFromPos(CurrentMap.getX(index), CurrentMap.getY(index));
+                if (unit.getUnitType() !== targetUnit.getUnitType()) {
+                    if (seekingMapManager.isVisible(index, unit.getUnitType())) {
+                        indexArrayNew.push(index);
+                    }
+                }
+            }
+        }
+
+        return indexArrayNew;
+    };
+
+    var alias1 = AttackChecker.getFusionAttackIndexArray;
+    AttackChecker.getFusionAttackIndexArray = function (unit, weapon, fusionData) {
+        var indexArray = alias1.call(this, unit, weapon, fusionData);
+        var indexArrayNew = [];
+
+        if (seekingMapManager.isSightMode()) {
+            for (var i = 0; i < indexArray.length; i++) {
+                var index = indexArray[i];
+                var targetUnit = PosChecker.getUnitFromPos(CurrentMap.getX(index), CurrentMap.getY(index));
+                if (unit.getUnitType() !== targetUnit.getUnitType()) {
+                    if (seekingMapManager.isVisible(index, unit.getUnitType())) {
+                        indexArrayNew.push(index);
+                    }
+                }
+            }
+        }
+
+        return indexArrayNew;
     };
 })();
