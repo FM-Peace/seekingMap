@@ -63,12 +63,31 @@ var seekingMapManager = new SeekingMapManager();
                     seekingMapManager.setUnitInvisible(unit);
                 }
             }
+
+            var allyList = AllyList.getAliveList();
+
+            for (var i = 0; i < allyList.getCount(); i++) {
+                var unit = allyList.getData(i);
+                var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+                if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+                    seekingMapManager.setUnitInvisible(unit);
+                }
+            }
         }
 
         alias2.call(this);
 
         if (seekingMapManager.isSightMode()) {
+            var enemyList = EnemyList.getAliveList();
+
             for (var i = 0; i < enemyList.getCount(); i++) {
+                var unit = enemyList.getData(i);
+                seekingMapManager.setUnitVisible(unit);
+            }
+
+            var allyList = AllyList.getAliveList();
+
+            for (var i = 0; i < allyList.getCount(); i++) {
                 var unit = enemyList.getData(i);
                 seekingMapManager.setUnitVisible(unit);
             }
@@ -89,7 +108,7 @@ var seekingMapManager = new SeekingMapManager();
 
         index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
 
-        if (unit.getUnitType() !== UnitType.ENEMY || seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+        if (unit.getUnitType() === UnitType.PLAYER || seekingMapManager.isVisible(index, UnitType.PLAYER)) {
             alias3.call(this);
         }
     };
@@ -103,7 +122,7 @@ var seekingMapManager = new SeekingMapManager();
         if (unit !== null) {
             index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
 
-            if (unit.getUnitType() === UnitType.ENEMY && !seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+            if (unit.getUnitType() !== UnitType.PLAYER && !seekingMapManager.isVisible(index, UnitType.PLAYER)) {
                 return MapEditResult.MAPCHIPCANCEL;
             }
         }

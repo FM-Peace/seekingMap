@@ -117,7 +117,7 @@ SeekingMapManager = (function () {
             return this._enemyInvisibleUnitManager.setUnitInvisible(unit);
         }
         if (unit.getUnitType() === UnitType.ALLY) {
-            return this._allySightManager.setUnitInvisible(unit);
+            return this._allyInvisibleUnitManager.setUnitInvisible(unit);
         }
     };
 
@@ -129,7 +129,7 @@ SeekingMapManager = (function () {
             return this._enemyInvisibleUnitManager.setUnitVisible(unit);
         }
         if (unit.getUnitType() === UnitType.ALLY) {
-            return this._allySightManager.setUnitVisible(unit);
+            return this._allyInvisibleUnitManager.setUnitVisible(unit);
         }
     };
 
