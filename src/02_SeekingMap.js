@@ -249,3 +249,117 @@ var seekingMapManager = new SeekingMapManager();
         return indexArrayNew;
     };
 })();
+
+// 移動系
+(function () {
+    var alias1 = MapSequenceArea._isPlaceSelectable;
+    MapSequenceArea._isPlaceSelectable = function () {
+        var isPlaseSelectable = alias1.call(this);
+
+        if (seekingMapManager.isSightMode() && !isPlaseSelectable) {
+            var x = this._mapCursor.getX();
+            var y = this._mapCursor.getY();
+            var unit = PosChecker.getUnitFromPos(x, y);
+
+            if (unit !== null && unit.getUnitType() !== UnitType.PLAYER && !seekingMapManager.isVisible(CurrentMap.getIndex(x, y), unit.getUnitType())) {
+                isPlaseSelectable = true;
+            }
+        }
+
+        return isPlaseSelectable;
+    };
+
+    var alias2 = UnitRangePanel._setRangeData;
+    UnitRangePanel._setRangeData = function () {
+        if (seekingMapManager.isSightMode()) {
+            if (this._unit.getUnitType() === UnitType.PLAYER) {
+                var enemyList = EnemyList.getAliveList();
+
+                for (var i = 0; i < enemyList.getCount(); i++) {
+                    var unit = enemyList.getData(i);
+                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+                        seekingMapManager.setUnitInvisible(unit);
+                    }
+                }
+
+                var allyList = AllyList.getAliveList();
+
+                for (var i = 0; i < allyList.getCount(); i++) {
+                    var unit = allyList.getData(i);
+                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+                        seekingMapManager.setUnitInvisible(unit);
+                    }
+                }
+            }
+        }
+
+        alias2.call(this);
+
+        if (seekingMapManager.isSightMode()) {
+            if (this._unit.getUnitType() === UnitType.PLAYER) {
+                var enemyList = EnemyList.getAliveList();
+
+                for (var i = 0; i < enemyList.getCount(); i++) {
+                    var unit = enemyList.getData(i);
+                    seekingMapManager.setUnitVisible(unit);
+                }
+
+                var allyList = AllyList.getAliveList();
+
+                for (var i = 0; i < allyList.getCount(); i++) {
+                    var unit = allyList.getData(i);
+                    seekingMapManager.setUnitVisible(unit);
+                }
+            }
+        }
+    };
+
+    var alias3 = UnitRangePanel._setRepeatRangeData;
+    UnitRangePanel._setRepeatRangeData = function(){
+        if (seekingMapManager.isSightMode()) {
+            if (this._unit.getUnitType() === UnitType.PLAYER) {
+                var enemyList = EnemyList.getAliveList();
+
+                for (var i = 0; i < enemyList.getCount(); i++) {
+                    var unit = enemyList.getData(i);
+                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+                        seekingMapManager.setUnitInvisible(unit);
+                    }
+                }
+
+                var allyList = AllyList.getAliveList();
+
+                for (var i = 0; i < allyList.getCount(); i++) {
+                    var unit = allyList.getData(i);
+                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+                        seekingMapManager.setUnitInvisible(unit);
+                    }
+                }
+            }
+        }
+
+        alias3.call(this);
+
+        if (seekingMapManager.isSightMode()) {
+            if (this._unit.getUnitType() === UnitType.PLAYER) {
+                var enemyList = EnemyList.getAliveList();
+
+                for (var i = 0; i < enemyList.getCount(); i++) {
+                    var unit = enemyList.getData(i);
+                    seekingMapManager.setUnitVisible(unit);
+                }
+
+                var allyList = AllyList.getAliveList();
+
+                for (var i = 0; i < allyList.getCount(); i++) {
+                    var unit = allyList.getData(i);
+                    seekingMapManager.setUnitVisible(unit);
+                }
+            }
+        }
+    }
+})();
