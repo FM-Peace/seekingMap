@@ -54,43 +54,15 @@ var seekingMapManager = new SeekingMapManager();
     var alias2 = MapLayer.drawUnitLayer;
     MapLayer.drawUnitLayer = function () {
         if (seekingMapManager.isSightMode()) {
-            var enemyList = EnemyList.getAliveList();
-
-            for (var i = 0; i < enemyList.getCount(); i++) {
-                var unit = enemyList.getData(i);
-                var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                    seekingMapManager.setUnitInvisible(unit);
-                }
-            }
-
-            var allyList = AllyList.getAliveList();
-
-            for (var i = 0; i < allyList.getCount(); i++) {
-                var unit = allyList.getData(i);
-                var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                    seekingMapManager.setUnitInvisible(unit);
-                }
-            }
+            seekingMapManager.setUnitInvisibleFromUnitList(EnemyList.getAliveList(), UnitType.PLAYER);
+            seekingMapManager.setUnitInvisibleFromUnitList(AllyList.getAliveList(), UnitType.PLAYER);
         }
 
         alias2.call(this);
 
         if (seekingMapManager.isSightMode()) {
-            var enemyList = EnemyList.getAliveList();
-
-            for (var i = 0; i < enemyList.getCount(); i++) {
-                var unit = enemyList.getData(i);
-                seekingMapManager.setUnitVisible(unit);
-            }
-
-            var allyList = AllyList.getAliveList();
-
-            for (var i = 0; i < allyList.getCount(); i++) {
-                var unit = allyList.getData(i);
-                seekingMapManager.setUnitVisible(unit);
-            }
+            seekingMapManager.setUnitVisibleFromUnitList(EnemyList.getAliveList());
+            seekingMapManager.setUnitVisibleFromUnitList(AllyList.getAliveList());
         }
     };
 
@@ -133,48 +105,26 @@ var seekingMapManager = new SeekingMapManager();
     var alias5 = MarkingPanel.updateMarkingPanel;
     MarkingPanel.updateMarkingPanel = function () {
         if (seekingMapManager.isSightMode()) {
-            var enemyList = EnemyList.getAliveList();
-
-            for (var i = 0; i < enemyList.getCount(); i++) {
-                var unit = enemyList.getData(i);
-                var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                    seekingMapManager.setUnitInvisible(unit);
-                }
-            }
+            seekingMapManager.setUnitInvisibleFromUnitList(EnemyList.getAliveList(), UnitType.PLAYER);
         }
 
         alias5.call(this);
 
         if (seekingMapManager.isSightMode()) {
-            for (var i = 0; i < enemyList.getCount(); i++) {
-                var unit = enemyList.getData(i);
-                seekingMapManager.setUnitVisible(unit);
-            }
+            seekingMapManager.setUnitVisibleFromUnitList(EnemyList.getAliveList());
         }
     };
 
     var alias6 = MarkingPanel.updateMarkingPanelFromUnit;
     MarkingPanel.updateMarkingPanelFromUnit = function (unit) {
         if (seekingMapManager.isSightMode()) {
-            var enemyList = EnemyList.getAliveList();
-
-            for (var i = 0; i < enemyList.getCount(); i++) {
-                var enemyUnit = enemyList.getData(i);
-                var index = CurrentMap.getIndex(enemyUnit.getMapX(), enemyUnit.getMapY());
-                if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                    seekingMapManager.setUnitInvisible(enemyUnit);
-                }
-            }
+            seekingMapManager.setUnitInvisibleFromUnitList(EnemyList.getAliveList(), UnitType.PLAYER);
         }
 
         alias6.call(this, unit);
 
         if (seekingMapManager.isSightMode()) {
-            for (var i = 0; i < enemyList.getCount(); i++) {
-                var enemyUnit = enemyList.getData(i);
-                seekingMapManager.setUnitVisible(enemyUnit);
-            }
+            seekingMapManager.setUnitVisibleFromUnitList(EnemyList.getAliveList());
         }
     }
 })();
@@ -273,25 +223,8 @@ var seekingMapManager = new SeekingMapManager();
     UnitRangePanel._setRangeData = function () {
         if (seekingMapManager.isSightMode()) {
             if (this._unit.getUnitType() === UnitType.PLAYER) {
-                var enemyList = EnemyList.getAliveList();
-
-                for (var i = 0; i < enemyList.getCount(); i++) {
-                    var unit = enemyList.getData(i);
-                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                        seekingMapManager.setUnitInvisible(unit);
-                    }
-                }
-
-                var allyList = AllyList.getAliveList();
-
-                for (var i = 0; i < allyList.getCount(); i++) {
-                    var unit = allyList.getData(i);
-                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                        seekingMapManager.setUnitInvisible(unit);
-                    }
-                }
+                seekingMapManager.setUnitInvisibleFromUnitList(EnemyList.getAliveList(), UnitType.PLAYER);
+                seekingMapManager.setUnitInvisibleFromUnitList(AllyList.getAliveList(), UnitType.PLAYER);
             }
         }
 
@@ -299,19 +232,8 @@ var seekingMapManager = new SeekingMapManager();
 
         if (seekingMapManager.isSightMode()) {
             if (this._unit.getUnitType() === UnitType.PLAYER) {
-                var enemyList = EnemyList.getAliveList();
-
-                for (var i = 0; i < enemyList.getCount(); i++) {
-                    var unit = enemyList.getData(i);
-                    seekingMapManager.setUnitVisible(unit);
-                }
-
-                var allyList = AllyList.getAliveList();
-
-                for (var i = 0; i < allyList.getCount(); i++) {
-                    var unit = allyList.getData(i);
-                    seekingMapManager.setUnitVisible(unit);
-                }
+                seekingMapManager.setUnitVisibleFromUnitList(EnemyList.getAliveList());
+                seekingMapManager.setUnitVisibleFromUnitList(AllyList.getAliveList());
             }
         }
     };
@@ -320,25 +242,8 @@ var seekingMapManager = new SeekingMapManager();
     UnitRangePanel._setRepeatRangeData = function(){
         if (seekingMapManager.isSightMode()) {
             if (this._unit.getUnitType() === UnitType.PLAYER) {
-                var enemyList = EnemyList.getAliveList();
-
-                for (var i = 0; i < enemyList.getCount(); i++) {
-                    var unit = enemyList.getData(i);
-                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                        seekingMapManager.setUnitInvisible(unit);
-                    }
-                }
-
-                var allyList = AllyList.getAliveList();
-
-                for (var i = 0; i < allyList.getCount(); i++) {
-                    var unit = allyList.getData(i);
-                    var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
-                    if (!seekingMapManager.isVisible(index, UnitType.PLAYER)) {
-                        seekingMapManager.setUnitInvisible(unit);
-                    }
-                }
+                seekingMapManager.setUnitInvisibleFromUnitList(EnemyList.getAliveList(), UnitType.PLAYER);
+                seekingMapManager.setUnitInvisibleFromUnitList(AllyList.getAliveList(), UnitType.PLAYER);
             }
         }
 
@@ -346,19 +251,8 @@ var seekingMapManager = new SeekingMapManager();
 
         if (seekingMapManager.isSightMode()) {
             if (this._unit.getUnitType() === UnitType.PLAYER) {
-                var enemyList = EnemyList.getAliveList();
-
-                for (var i = 0; i < enemyList.getCount(); i++) {
-                    var unit = enemyList.getData(i);
-                    seekingMapManager.setUnitVisible(unit);
-                }
-
-                var allyList = AllyList.getAliveList();
-
-                for (var i = 0; i < allyList.getCount(); i++) {
-                    var unit = allyList.getData(i);
-                    seekingMapManager.setUnitVisible(unit);
-                }
+                seekingMapManager.setUnitVisibleFromUnitList(EnemyList.getAliveList());
+                seekingMapManager.setUnitVisibleFromUnitList(AllyList.getAliveList());
             }
         }
     }

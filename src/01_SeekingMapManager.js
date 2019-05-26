@@ -105,6 +105,13 @@ SeekingMapManager = (function () {
         return false;
     };
 
+    p.setUnitVisibleFromUnitList = function(unitList){
+        for (var i = 0; i < unitList.getCount(); i++) {
+            var unit = unitList.getData(i);
+            this.setUnitVisible(unit);
+        }
+    };
+
     p.isSightMode = function () {
         return this._sightMode !== SightMode.NONE;
     };
@@ -118,6 +125,16 @@ SeekingMapManager = (function () {
         }
         if (unit.getUnitType() === UnitType.ALLY) {
             return this._allyInvisibleUnitManager.setUnitInvisible(unit);
+        }
+    };
+
+    p.setUnitInvisibleFromUnitList = function(unitList, unitType){
+        for (var i = 0; i < unitList.getCount(); i++) {
+            var unit = unitList.getData(i);
+            var index = CurrentMap.getIndex(unit.getMapX(), unit.getMapY());
+            if (!this.isVisible(index, unitType)) {
+                this.setUnitInvisible(unit);
+            }
         }
     };
 
