@@ -211,7 +211,7 @@ var seekingMapManager = new SeekingMapManager();
             var y = this._mapCursor.getY();
             var unit = PosChecker.getUnitFromPos(x, y);
 
-            if (unit !== null && unit.getUnitType() !== UnitType.PLAYER && !seekingMapManager.isVisible(CurrentMap.getIndex(x, y), unit.getUnitType())) {
+            if (unit !== null && unit.getUnitType() !== UnitType.PLAYER && !seekingMapManager.isVisible(CurrentMap.getIndex(x, y), UnitType.PLAYER)) {
                 isPlaseSelectable = true;
             }
         }
