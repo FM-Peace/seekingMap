@@ -239,7 +239,7 @@ var seekingMapManager = new SeekingMapManager();
     };
 
     var alias3 = UnitRangePanel._setRepeatRangeData;
-    UnitRangePanel._setRepeatRangeData = function(){
+    UnitRangePanel._setRepeatRangeData = function () {
         if (seekingMapManager.isSightMode()) {
             if (this._unit.getUnitType() === UnitType.PLAYER) {
                 seekingMapManager.setUnitInvisibleFromUnitList(EnemyList.getAliveList(), UnitType.PLAYER);
@@ -255,5 +255,49 @@ var seekingMapManager = new SeekingMapManager();
                 seekingMapManager.setUnitVisibleFromUnitList(AllyList.getAliveList());
             }
         }
-    }
+    };
+
+    var alias4 = CourceBuilder._createCource;
+    CourceBuilder._createCource = function (unit, goalIndex, simulator, indexArrayDisabled, moveMaxCount, type) {
+        var cource = alias4.call(this, unit, goalIndex, simulator, indexArrayDisabled, moveMaxCount, type);
+
+        if (!seekingMapManager.isSightMode()) {
+            return cource;
+        }
+
+        var invisibleUnitList = [];
+        while (indexArrayDisabled.length > 0) {
+            var index = indexArrayDisabled.pop();
+            if (!seekingMapManager.isVisible(index, unit.getUnitType())) {
+                var targetUnit = PosChecker.getUnitFromPos(CurrentMap.getX(index), CurrentMap.getY(index));
+                seekingMapManager.setUnitInvisible(targetUnit);
+                invisibleUnitList.push(targetUnit);
+            }
+        }
+
+        simulator.resetSimulationMark();
+        cource = alias4.call(this, unit, goalIndex, simulator, indexArrayDisabled, moveMaxCount, type);
+
+        while (invisibleUnitList.length > 0) {
+            seekingMapManager.setUnitVisible(invisibleUnitList.pop());
+        }
+
+        var newCource = [];
+        var x = unit.getMapX();
+        var y = unit.getMapY();
+
+        for (var i = 0; i < cource.length; i++) {
+            x += XPoint[cource[i]];
+            y += YPoint[cource[i]];
+
+            if (PosChecker.getUnitFromPos(x, y) !== null) {
+                break;
+            }
+
+            newCource.push(cource[i]);
+        }
+
+        return newCource;
+    };
+
 })();
