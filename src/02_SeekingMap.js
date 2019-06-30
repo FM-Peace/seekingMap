@@ -127,6 +127,19 @@ var seekingMapManager = new SeekingMapManager();
             seekingMapManager.setUnitVisibleFromUnitList(EnemyList.getAliveList());
         }
     }
+
+    var alias7 = SimulateMove.drawUnit;
+    SimulateMove.drawUnit = function () {
+        var x = Math.floor(this._xPixel / GraphicsFormat.MAPCHIP_WIDTH);
+        var y = Math.floor(this._yPixel / GraphicsFormat.MAPCHIP_HEIGHT);
+        var index = CurrentMap.getIndex(x, y);
+
+        if (this._unit.getUnitType() !== UnitType.PLAYER && !seekingMapManager.isVisible(index, UnitType.PLAYER)) {
+            return;
+        }
+
+        alias7.call(this);
+    };
 })();
 
 // 視界更新系
